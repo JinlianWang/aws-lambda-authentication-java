@@ -21,6 +21,7 @@ abstract public class BaseHttpRequestHandler implements RequestHandler<APIGatewa
         try {
             HttpRequestRouter router = new HttpRequestRouter();
 
+
             this.configureRouter(router);
 
             //Every Lambda functions exposes health check by default and "page not found" as catch-all processor

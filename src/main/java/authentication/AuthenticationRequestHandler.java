@@ -1,4 +1,4 @@
-package example;
+package authentication;
 
 import shared.BaseHttpRequestHandler;
 import shared.HttpRequestRouter;

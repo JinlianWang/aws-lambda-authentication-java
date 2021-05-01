@@ -6,7 +6,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: build/distributions/blank-java.zip
-      Handler: example.Handler::handleRequest
+      Handler: authentication.AuthenticationRequestHandler::handleRequest
       Runtime: java8
       Description: Java function
       MemorySize: 512

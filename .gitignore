@@ -1,0 +1,8 @@
+target
+.gradle
+.idea
+build
+out.json
+out.yml
+blank-java.iml
+bucket-name.txt

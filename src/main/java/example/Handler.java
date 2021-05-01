@@ -60,6 +60,6 @@ public class Handler implements RequestHandler<SQSEvent, String>{
     } catch(Exception e) {
       e.getStackTrace();
     }
-    return response;
+    return "Account Info: " + response;
   }
 }

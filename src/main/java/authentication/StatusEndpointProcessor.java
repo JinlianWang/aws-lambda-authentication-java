@@ -5,13 +5,16 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import shared.BaseHttpEndpointProcessor;
 import shared.SessionInfo;
 import software.amazon.awssdk.http.HttpStatusCode;
-import java.util.UUID;
 
 public class StatusEndpointProcessor extends BaseHttpEndpointProcessor {
     @Override
     protected APIGatewayProxyResponseEvent process(APIGatewayProxyRequestEvent requestEvent) {
-        SessionInfo sessionInfo = new SessionInfo();
-        sessionInfo.setId(UUID.randomUUID().toString());
-        return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.OK).withBody(gson.toJson(sessionInfo));
+        try {
+            SessionInfo sessionInfo = AuthenticationServices.getInstance().status();
+            return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.OK).withBody(gson.toJson(sessionInfo));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.SERVICE_UNAVAILABLE).withBody(ex.getMessage());
+        }
     }
 }

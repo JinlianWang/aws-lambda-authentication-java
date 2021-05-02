@@ -1,12 +1,13 @@
-package shared;
+package authentication;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import shared.BaseHttpEndpointProcessor;
 import software.amazon.awssdk.http.HttpStatusCode;
 
-public class PageNotFoundProcessor extends BaseHttpEndpointProcessor {
+public class LogoutEndpointProcessor extends BaseHttpEndpointProcessor {
     @Override
     protected APIGatewayProxyResponseEvent process(APIGatewayProxyRequestEvent requestEvent) {
-        return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.NOT_FOUND).withBody("Resource not found: " + requestEvent.getHttpMethod().toUpperCase() + " " + requestEvent.getPath());
+        return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.OK);
     }
 }

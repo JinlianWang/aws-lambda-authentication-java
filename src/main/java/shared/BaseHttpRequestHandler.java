@@ -9,6 +9,8 @@ import com.google.gson.GsonBuilder;
 import jauter.Routed;
 
 abstract public class BaseHttpRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+    public static final String ENVIRONMENT_VARIABLE_HEALTH_PATH = "ENVIRONMENT_VARIABLE_HEALTH_PATH";
+
     private final Gson gson;
     private final String URL_PATTERN_HEALTH = "/health";
 
@@ -25,7 +27,12 @@ abstract public class BaseHttpRequestHandler implements RequestHandler<APIGatewa
             this.configureRouter(router);
 
             //Every Lambda functions exposes health check by default and "page not found" as catch-all processor
-            router.GET(URL_PATTERN_HEALTH, HealthCheckProcessor.class);
+            String healthUrl = URL_PATTERN_HEALTH;
+            try {
+                healthUrl = Utils.getEnvironmentVariable(ENVIRONMENT_VARIABLE_HEALTH_PATH);
+            } catch (Exception ex) {}
+
+            router.GET(healthUrl, HealthCheckProcessor.class);
             router.notFound(PageNotFoundProcessor.class);
 
             Routed<Class<? extends  HttpEndpointProcessor>> routed = router.route(HttpRequestMethod.valueOf(requestEvent.getHttpMethod().toUpperCase()), requestEvent.getPath());

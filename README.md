@@ -1,6 +1,6 @@
 # Blank function (Java)
 
-![Architecture](/sample-apps/blank-java/images/sample-blank-java.png)
+![Architecture](./images/sample-blank-java.png)
 
 The project source includes function code and supporting resources:
 
@@ -76,11 +76,11 @@ Let the script invoke the function a few times and then press `CRTL+C` to exit.
 
 The application uses AWS X-Ray to trace requests. Open the [X-Ray console](https://console.aws.amazon.com/xray/home#/service-map) to view the service map.
 
-![Service Map](/sample-apps/blank-java/images/blank-java-servicemap.png)
+![Service Map](./images/blank-java-servicemap.png)
 
 Choose a node in the main function graph. Then choose **View traces** to see a list of traces. Choose any trace to view a timeline that breaks down the work done by the function.
 
-![Trace](/sample-apps/blank-java/images/blank-java-trace.png)
+![Trace](./images/blank-java-trace.png)
 
 Finally, view the application in the Lambda console.
 
@@ -88,7 +88,7 @@ Finally, view the application in the Lambda console.
 1. Open the [applications page](https://console.aws.amazon.com/lambda/home#/applications) in the Lambda console.
 2. Choose **blank-java**.
 
-  ![Application](/sample-apps/blank-java/images/blank-java-application.png)
+  ![Application](./images/blank-java-application.png)
 
 # Cleanup
 To delete the application, run `5-cleanup.sh`.

@@ -18,6 +18,12 @@ Resources:
         - AWSXrayWriteOnlyAccess
         - AWSLambdaVPCAccessExecutionRole
       Tracing: Active
+      Environment:
+        Variables:
+          ENVIRONMENT_VARIABLE_COGNITO_PREFIX: sunnyoauth
+          ENVIRONMENT_VARIABLE_APP_ID: 1vvp0tt53g1uhntoa5bmvnvk2a
+          ENVIRONMENT_VARIABLE_APP_SECRET: <secret>
+          ENVIRONMENT_VARIABLE_GATEWAY_URL: https://ovx6e57ep3.execute-api.us-east-1.amazonaws.com
       Layers:
         - !Ref libs
   libs:

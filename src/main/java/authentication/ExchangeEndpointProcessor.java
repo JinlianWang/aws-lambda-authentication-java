@@ -2,7 +2,9 @@ package authentication;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import shared.*;
+import shared.BaseHttpEndpointProcessor;
+import shared.SessionInfo;
+import shared.Utils;
 import software.amazon.awssdk.http.HttpStatusCode;
 
 public class ExchangeEndpointProcessor extends BaseHttpEndpointProcessor {

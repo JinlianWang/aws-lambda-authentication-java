@@ -28,8 +28,12 @@ import java.util.stream.Collectors;
 public class AuthenticationServices {
 
     public static AuthenticationServices getInstance() throws EnvironmentVariableMissingException {
-        if(authenticationServices != null) {
-            authenticationServices = new AuthenticationServices();
+        if(authenticationServices == null) {
+            synchronized (AuthenticationServices.class) {
+                if(authenticationServices == null) {
+                    authenticationServices = new AuthenticationServices();
+                }
+            }
         }
         return authenticationServices;
     }
@@ -58,7 +62,7 @@ public class AuthenticationServices {
     }
 
     public SessionInfo status() {
-        if(this.sessionInfo.getExpirationTime() < new Date().getTime()) {
+        if(new Date().getTime() < this.sessionInfo.getExpirationTime() ) {
             return this.sessionInfo;
         }
         this.sessionInfo = null;
@@ -123,12 +127,12 @@ public class AuthenticationServices {
 
 
     private String getBase64EncodedCredential() {
-        String credential = String.format("%s%s", this.appId, this.appSecret);
+        String credential = String.format("%s:%s", this.appId, this.appSecret);
         return Base64.getEncoder().encodeToString(credential.getBytes(StandardCharsets.UTF_8));
     }
 
     private static String getCognitoHost() throws EnvironmentVariableMissingException {
-        return Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_COGNITO_PREFIX) + ".auth.us-east-1.amazoncognito.com";
+        return "https://" + Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_COGNITO_PREFIX) + ".auth.us-east-1.amazoncognito.com";
     }
 
 
@@ -143,7 +147,7 @@ public class AuthenticationServices {
 
     private static String getRedirectURI() throws EnvironmentVariableMissingException {
         return Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_GATEWAY_URL)
-                            + Utils.getEnvironmentVariable(Constants.URL_PATTERN_EXCHANGE);
+                            + Constants.URL_PATTERN_EXCHANGE;
 
     }
 }

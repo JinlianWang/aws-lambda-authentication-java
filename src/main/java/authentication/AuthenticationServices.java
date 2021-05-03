@@ -62,7 +62,7 @@ public class AuthenticationServices {
     }
 
     public SessionInfo status() {
-        if(new Date().getTime() < this.sessionInfo.getExpirationTime() ) {
+        if(this.sessionInfo != null && (this.sessionInfo.getExpirationTime() > new Date().getTime())) {
             return this.sessionInfo;
         }
         this.sessionInfo = null;

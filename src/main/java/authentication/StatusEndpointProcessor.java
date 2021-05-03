@@ -11,6 +11,9 @@ public class StatusEndpointProcessor extends BaseHttpEndpointProcessor {
     protected APIGatewayProxyResponseEvent process(APIGatewayProxyRequestEvent requestEvent) {
         try {
             SessionInfo sessionInfo = AuthenticationServices.getInstance().status();
+            if(sessionInfo == null) {
+                sessionInfo = new SessionInfo();
+            }
             return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.OK).withBody(gson.toJson(sessionInfo));
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -15,6 +15,14 @@ public class Utils {
         return value;
     }
 
+    public static String getEnvironmentVariable(String name, String defaultValue) {
+        String value = System.getenv(name);
+        if(value == null) {
+            return defaultValue;
+        }
+        return value;
+    }
+
     public static String getQueryParameter(APIGatewayProxyRequestEvent requestEvent, String name) throws QueryParameterMissingException {
         if(requestEvent.getQueryStringParameters() != null && requestEvent.getQueryStringParameters().get(name) != null) {
             return requestEvent.getQueryStringParameters().get(name);

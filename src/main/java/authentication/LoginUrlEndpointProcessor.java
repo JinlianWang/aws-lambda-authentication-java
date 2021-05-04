@@ -12,12 +12,12 @@ public class LoginUrlEndpointProcessor extends BaseHttpEndpointProcessor {
     protected APIGatewayProxyResponseEvent process(APIGatewayProxyRequestEvent requestEvent) {
         try {
             String loginUrl = AuthenticationServices.getInstance().getLoginUrl();
-            APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.TEMPORARY_REDIRECT).withBody(loginUrl);
+            APIGatewayProxyResponseEvent responseEvent = Utils.createResponseEvent(HttpStatusCode.TEMPORARY_REDIRECT, loginUrl);
             Utils.setRedirectHeader(responseEvent, loginUrl);
             return responseEvent;
         } catch (EnvironmentVariableMissingException ex) {
             ex.printStackTrace();
-            return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.SERVICE_UNAVAILABLE).withBody(ex.getMessage());
+            return Utils.createResponseEvent(HttpStatusCode.SERVICE_UNAVAILABLE, ex.getMessage());
         }
     }
 }

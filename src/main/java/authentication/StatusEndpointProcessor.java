@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import shared.BaseHttpEndpointProcessor;
 import shared.SessionInfo;
+import shared.Utils;
 import software.amazon.awssdk.http.HttpStatusCode;
 
 public class StatusEndpointProcessor extends BaseHttpEndpointProcessor {
@@ -11,13 +12,14 @@ public class StatusEndpointProcessor extends BaseHttpEndpointProcessor {
     protected APIGatewayProxyResponseEvent process(APIGatewayProxyRequestEvent requestEvent) {
         try {
             SessionInfo sessionInfo = AuthenticationServices.getInstance().status();
-            if(sessionInfo == null) {
-                sessionInfo = new SessionInfo();
+            String responseString = "{}";
+            if(sessionInfo != null) {
+                responseString = gson.toJson(sessionInfo);
             }
-            return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.OK).withBody(gson.toJson(sessionInfo));
+            return Utils.createResponseEvent(HttpStatusCode.OK, responseString);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.SERVICE_UNAVAILABLE).withBody(ex.getMessage());
+            return Utils.createResponseEvent(HttpStatusCode.SERVICE_UNAVAILABLE, ex.getMessage());
         }
     }
 }

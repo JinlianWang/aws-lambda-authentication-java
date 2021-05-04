@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Utils {
+    public static final String ENVIRONMENT_VARIABLE_ALLOW_ORIGIN = "CORS_ALLOW_ORIGIN";
     public static String getEnvironmentVariable(String name) throws EnvironmentVariableMissingException {
         String value = System.getenv(name);
         if(value == null) {
@@ -31,11 +32,31 @@ public class Utils {
     }
 
     public static void setRedirectHeader(APIGatewayProxyResponseEvent responseEvent, String redirectUrl) {
+        getResponseHeader(responseEvent).put("Location", redirectUrl);
+    }
+
+    public static APIGatewayProxyResponseEvent createResponseEvent(int statusCode, String responseString) {
+        APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent().withStatusCode(statusCode);
+        if(responseString.length()>0) {
+            responseEvent.setBody(responseString);
+        }
+        String allowedOrigin = getEnvironmentVariable(ENVIRONMENT_VARIABLE_ALLOW_ORIGIN, "");
+        if(allowedOrigin.length()>0) {
+            getResponseHeader(responseEvent).put("Access-Control-Allow-Origin", allowedOrigin);
+        }
+        return responseEvent;
+    }
+
+    public static APIGatewayProxyResponseEvent createResponseEvent(int statusCode) {
+        return createResponseEvent(statusCode, "");
+    }
+
+    private static Map<String, String> getResponseHeader(APIGatewayProxyResponseEvent responseEvent) {
         Map<String, String> headers = responseEvent.getHeaders();
         if(headers == null) {
             headers = new HashMap<String, String>();
             responseEvent.setHeaders(headers);
         }
-        headers.put("Location", redirectUrl);
+        return headers;
     }
 }

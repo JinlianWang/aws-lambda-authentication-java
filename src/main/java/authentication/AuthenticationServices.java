@@ -41,7 +41,7 @@ public class AuthenticationServices {
     public String getLoginUrl() throws EnvironmentVariableMissingException {
         StringBuffer urlBuffer = new StringBuffer();
         urlBuffer.append(this.getCognitoHost() + "/oauth2/authorize?client_id=");
-        urlBuffer.append(Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_APP_ID));
+        urlBuffer.append(Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_COGNITO_APP_ID));
         urlBuffer.append("&redirect_uri=");
         urlBuffer.append(encodeURIComponent(this.getRedirectURI()));
         urlBuffer.append("&scope=openid&response_type=code");
@@ -77,8 +77,8 @@ public class AuthenticationServices {
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private AuthenticationServices() throws EnvironmentVariableMissingException {
-        this.appId = Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_APP_ID);
-        this.appSecret = Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_APP_SECRET);
+        this.appId = Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_COGNITO_APP_ID);
+        this.appSecret = Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_COGNITO_APP_SECRET);
     }
 
     private static HttpClient httpClient = getHttpClient();
@@ -146,7 +146,7 @@ public class AuthenticationServices {
     }
 
     private static String getRedirectURI() throws EnvironmentVariableMissingException {
-        return Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_GATEWAY_URL)
+        return Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_API_GATEWAY_URL)
                             + Constants.URL_PATTERN_EXCHANGE;
 
     }

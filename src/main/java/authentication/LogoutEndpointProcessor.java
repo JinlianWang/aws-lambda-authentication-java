@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import shared.BaseHttpEndpointProcessor;
 import shared.EnvironmentVariableMissingException;
+import shared.Utils;
 import software.amazon.awssdk.http.HttpStatusCode;
 
 public class LogoutEndpointProcessor extends BaseHttpEndpointProcessor {
@@ -11,10 +12,10 @@ public class LogoutEndpointProcessor extends BaseHttpEndpointProcessor {
     protected APIGatewayProxyResponseEvent process(APIGatewayProxyRequestEvent requestEvent) {
         try {
             AuthenticationServices.getInstance().logout();
-            return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.OK);
+            return Utils.createResponseEvent(HttpStatusCode.OK);
         } catch (EnvironmentVariableMissingException ex) {
             ex.printStackTrace();
-            return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.SERVICE_UNAVAILABLE).withBody(ex.getMessage());
-        }
+            return Utils.createResponseEvent(HttpStatusCode.SERVICE_UNAVAILABLE, ex.getMessage());
+         }
     }
 }

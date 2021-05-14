@@ -11,6 +11,7 @@ public class AuthenticationRequestHandler extends BaseHttpRequestHandler {
                 .GET(Constants.URL_PATTERN_STATUS, StatusEndpointProcessor.class)
                 .GET(Constants.URL_PATTERN_EXCHANGE, ExchangeEndpointProcessor.class)
                 .GET(Constants.URL_PATTERN_LOGOUT, LogoutEndpointProcessor.class)
+                .GET(Constants.URL_PATTERN_RESOURCE, ResourceEndpointProcessor.class)
                 .POST(Constants.URL_PATTERN_LOGOUT, LogoutEndpointProcessor.class);
     }
 }

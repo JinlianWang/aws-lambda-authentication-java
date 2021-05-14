@@ -4,6 +4,7 @@ public class Constants {
     public static final String URL_PATTERN_LOGIN = "/apis/authentication/login";
     public static final String URL_PATTERN_STATUS = "/apis/authentication/status";
     public static final String URL_PATTERN_EXCHANGE = "/apis/authentication/exchange";
+    public static final String URL_PATTERN_RESOURCE = "/apis/authentication/resource";
     public static final String URL_PATTERN_LOGOUT = "/apis/authentication/logout";
 
     public static final String ENVIRONMENT_VARIABLE_COGNITO_PREFIX = "COGNITO_DOMAIN_PREFIX";

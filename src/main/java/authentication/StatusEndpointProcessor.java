@@ -13,7 +13,7 @@ public class StatusEndpointProcessor extends BaseHttpEndpointProcessor {
         try {
             SessionInfo sessionInfo = AuthenticationServices.getInstance().status();
             String responseString = "{}";
-            if(sessionInfo != null) {
+            if(sessionInfo != null && sessionInfo.getId().equalsIgnoreCase(Utils.getBearerToken(requestEvent))) {
                 responseString = gson.toJson(sessionInfo);
             }
             return Utils.createResponseEvent(HttpStatusCode.OK, responseString);

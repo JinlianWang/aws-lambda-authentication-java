@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class Utils {
     public static final String ENVIRONMENT_VARIABLE_ALLOW_ORIGIN = "CORS_ALLOW_ORIGIN";
+    public static final String HTTP_AUTHORIZATION_HEADER = "Authorization";
     public static String getEnvironmentVariable(String name) throws EnvironmentVariableMissingException {
         String value = System.getenv(name);
         if(value == null) {
@@ -29,6 +30,17 @@ public class Utils {
             return requestEvent.getQueryStringParameters().get(name);
         }
         throw new QueryParameterMissingException(name);
+    }
+
+    public static String getBearerToken(APIGatewayProxyRequestEvent requestEvent) {
+        String header = requestEvent.getHeaders().get(HTTP_AUTHORIZATION_HEADER);
+        if(header !=null && !header.isEmpty()) {
+            String[] parts = header.split(" ");
+            if(parts.length ==2 && parts[0].equalsIgnoreCase("Bearer")) {
+                return parts[1];
+            }
+        }
+        return "";
     }
 
     public static void setRedirectHeader(APIGatewayProxyResponseEvent responseEvent, String redirectUrl) {

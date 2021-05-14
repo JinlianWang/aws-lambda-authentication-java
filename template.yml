@@ -23,8 +23,11 @@ Resources:
           COGNITO_DOMAIN_PREFIX: sunnyoauth
           COGNITO_APP_ID: 1vvp0tt53g1uhntoa5bmvnvk2a
           COGNITO_APP_SECRET: <secret>
-          API_GATEWAY_URL: https://fp6god49v7.execute-api.us-east-1.amazonaws.com/prod
-          CORS_ALLOW_ORIGIN: *
+          API_GATEWAY_URL: https://a7blo97bal.execute-api.us-east-1.amazonaws.com/prod
+          # CORS_ALLOW_ORIGIN: http://localhost:4200
+          CORS_ALLOW_ORIGIN: http://athenatestsunny2020.s3-website-us-east-1.amazonaws.com
+          # LOGIN_REDIRECT_URL: http://localhost:4200
+          LOGIN_REDIRECT_URL: http://athenatestsunny2020.s3-website-us-east-1.amazonaws.com
       Layers:
         - !Ref libs
   libs:

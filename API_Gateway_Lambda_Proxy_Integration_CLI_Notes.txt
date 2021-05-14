@@ -1,0 +1,69 @@
+Sunnys-Air:blank-java sunnywang$ export API_NAME=oAuthDemoAPI
+Sunnys-Air:blank-java sunnywang$ aws apigateway create-rest-api --name $API_NAME
+{
+    "id": "a7blo97bal",
+    "name": "oAuthDemoAPI",
+    "createdDate": "2021-05-14T13:59:40-04:00",
+    "apiKeySource": "HEADER",
+    "endpointConfiguration": {
+        "types": [
+            "EDGE"
+        ]
+    },
+    "disableExecuteApiEndpoint": false
+}
+Sunnys-Air:blank-java sunnywang$ export API_ID=a7blo97bal
+Sunnys-Air:blank-java sunnywang$ aws apigateway get-resources --rest-api-id $API_ID
+{
+    "items": [
+        {
+            "id": "x4iy6fgxlg",
+            "path": "/"
+        }
+    ]
+}
+Sunnys-Air:blank-java sunnywang$ export ROOT_RESOURCE_ID=x4iy6fgxlg
+Sunnys-Air:blank-java sunnywang$ aws apigateway create-resource --rest-api-id $API_ID  --path-part {proxy+} --parent-id $ROOT_RESOURCE_ID
+{
+    "id": "tjg2up",
+    "parentId": "x4iy6fgxlg",
+    "pathPart": "{proxy+}",
+    "path": "/{proxy+}"
+}
+Sunnys-Air:blank-java sunnywang$ export PROXY_RESOURCE_ID=tjg2up
+Sunnys-Air:blank-java sunnywang$ aws apigateway put-method --rest-api-id $API_ID --resource-id $PROXY_RESOURCE_ID --http-method ANY --authorization-type NONE
+{
+    "httpMethod": "ANY",
+    "authorizationType": "NONE",
+    "apiKeyRequired": false
+}
+Sunnys-Air:blank-java sunnywang$ export REGION=us-east-1
+Sunnys-Air:blank-java sunnywang$ export FUNCION_NAME=blank-java-function-K5XJJM9ICG21
+Sunnys-Air:blank-java sunnywang$ export ACCOUNT=730508922179
+Sunnys-Air:blank-java sunnywang$ export LAMBDA_IAM_ROLE=arn:aws:iam::730508922179:role/api-gateway-lambda-proxy
+Sunnys-Air:blank-java sunnywang$ aws apigateway put-integration \
+         --region $REGION \
+         --rest-api-id $API_ID \
+          --resource-id $PROXY_RESOURCE_ID \
+         --http-method ANY \
+          --type AWS_PROXY \
+         --integration-http-method POST \
+          --uri arn:aws:apigateway:$REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:$REGION:$ACCOUNT:function:$FUNCION_NAME/invocations \
+          --credentials $LAMBDA_IAM_ROLE
+{
+    "type": "AWS_PROXY",
+    "httpMethod": "POST",
+    "uri": "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:730508922179:function:blank-java-function-K5XJJM9ICG21/invocations",
+    "credentials": "arn:aws:iam::730508922179:role/api-gateway-lambda-proxy",
+    "passthroughBehavior": "WHEN_NO_MATCH",
+    "timeoutInMillis": 29000,
+    "cacheNamespace": "tjg2up",
+    "cacheKeyParameters": []
+}
+Sunnys-Air:blank-java sunnywang$ export STAGE_NAME=prod
+Sunnys-Air:blank-java sunnywang$ aws apigateway create-deployment --rest-api-id $API_ID --stage-name $STAGE_NAME
+{
+    "id": "ckq975",
+    "createdDate": "2021-05-14T14:06:03-04:00"
+}
+Sunnys-Air:blank-java sunnywang$

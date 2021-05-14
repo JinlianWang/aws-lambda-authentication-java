@@ -7,6 +7,6 @@ import software.amazon.awssdk.http.HttpStatusCode;
 public class HealthCheckProcessor extends BaseHttpEndpointProcessor {
     @Override
     protected APIGatewayProxyResponseEvent process(APIGatewayProxyRequestEvent requestEvent) {
-        return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.OK);
+        return Utils.createResponseEvent(HttpStatusCode.OK);
     }
 }

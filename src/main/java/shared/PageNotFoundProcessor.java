@@ -7,6 +7,6 @@ import software.amazon.awssdk.http.HttpStatusCode;
 public class PageNotFoundProcessor extends BaseHttpEndpointProcessor {
     @Override
     protected APIGatewayProxyResponseEvent process(APIGatewayProxyRequestEvent requestEvent) {
-        return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.NOT_FOUND).withBody("Resource not found: " + requestEvent.getHttpMethod().toUpperCase() + " " + requestEvent.getPath());
+        return Utils.createResponseEvent(HttpStatusCode.NOT_FOUND, "Resource not found: " + requestEvent.getHttpMethod().toUpperCase() + " " + requestEvent.getPath());
     }
 }

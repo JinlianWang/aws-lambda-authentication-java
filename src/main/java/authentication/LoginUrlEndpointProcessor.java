@@ -11,7 +11,7 @@ public class LoginUrlEndpointProcessor extends BaseHttpEndpointProcessor {
     @Override
     protected APIGatewayProxyResponseEvent process(APIGatewayProxyRequestEvent requestEvent) {
         try {
-            String loginUrl = AuthenticationServices.getInstance().getLoginUrl();
+            String loginUrl = AuthenticationServices.getInstance().getLoginUrl(this.getApiGatewayUrl(requestEvent));
             APIGatewayProxyResponseEvent responseEvent = Utils.createResponseEvent(HttpStatusCode.OK, loginUrl);
             return responseEvent;
         } catch (EnvironmentVariableMissingException ex) {

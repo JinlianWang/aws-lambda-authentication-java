@@ -38,18 +38,18 @@ public class AuthenticationServices {
         return authenticationServices;
     }
 
-    public String getLoginUrl() throws EnvironmentVariableMissingException {
+    public String getLoginUrl(String apiGatewayUrl) throws EnvironmentVariableMissingException {
         StringBuffer urlBuffer = new StringBuffer();
         urlBuffer.append(this.getCognitoHost() + "/oauth2/authorize?client_id=");
         urlBuffer.append(Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_COGNITO_APP_ID));
         urlBuffer.append("&redirect_uri=");
-        urlBuffer.append(encodeURIComponent(this.getRedirectURI()));
+        urlBuffer.append(encodeURIComponent(this.getRedirectURI(apiGatewayUrl)));
         urlBuffer.append("&scope=openid&response_type=code");
         return urlBuffer.toString();
     }
 
-    public SessionInfo exchangeForSession(String code) throws URISyntaxException, IOException, EnvironmentVariableMissingException {
-        String accessToken = this.exchangeForAccessToken(code);
+    public SessionInfo exchangeForSession(String code, String apiGatewayUrl) throws URISyntaxException, IOException, EnvironmentVariableMissingException {
+        String accessToken = this.exchangeForAccessToken(code, apiGatewayUrl);
         SessionInfo sessionInfo = this.retrieveUserInfo(accessToken);
         sessionInfo.setId(UUID.randomUUID().toString());
         sessionInfo.setExpirationTime(new Date().getTime() + 15 * 60 * 1000);
@@ -88,13 +88,13 @@ public class AuthenticationServices {
                 .build();
     }
 
-    private String exchangeForAccessToken(String code) throws URISyntaxException, IOException, EnvironmentVariableMissingException {
+    private String exchangeForAccessToken(String code, String apiGatewayUrl) throws URISyntaxException, IOException, EnvironmentVariableMissingException {
         URIBuilder uriBuilder = new URIBuilder(this.getCognitoHost() + "/oauth2/token");
 
         Map<String, String> parameters = new HashMap<>();
         parameters.put("code", code);
         parameters.put("grant_type", "authorization_code");
-        parameters.put("redirect_uri", this.getRedirectURI());
+        parameters.put("redirect_uri", this.getRedirectURI(apiGatewayUrl));
 
         String form = parameters.keySet().stream()
                 .map(key -> key + "=" + encodeURIComponent(parameters.get(key)))
@@ -145,9 +145,13 @@ public class AuthenticationServices {
         }
     }
 
-    private static String getRedirectURI() throws EnvironmentVariableMissingException {
-        return Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_API_GATEWAY_URL)
-                            + Constants.URL_PATTERN_EXCHANGE;
-
+    private static String getRedirectURI(String apiGatewayUrl) throws EnvironmentVariableMissingException {
+        if(apiGatewayUrl.isEmpty()) {
+            return Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_API_GATEWAY_URL)
+                    + Constants.URL_PATTERN_EXCHANGE;
+        } else {
+            return apiGatewayUrl
+                    + Constants.URL_PATTERN_EXCHANGE;
+        }
     }
 }

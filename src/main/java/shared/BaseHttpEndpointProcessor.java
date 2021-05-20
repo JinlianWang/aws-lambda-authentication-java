@@ -1,5 +1,6 @@
 package shared;
 
+import authentication.Constants;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
@@ -18,6 +19,19 @@ abstract public class BaseHttpEndpointProcessor implements HttpEndpointProcessor
         this.routed = routed;
         this.context = context;
         return this.process(requestEvent);
+    }
+
+    public String getApiGatewayUrl(APIGatewayProxyRequestEvent requestEvent) {
+        //Derive apiGatewayUrl from request context instead of passing in from environment variable.
+        String apiGatewayUrl = "";
+        String apiGatewayId = requestEvent.getRequestContext().getApiId();
+        if(apiGatewayId != null && !apiGatewayId.isEmpty()) {
+            apiGatewayUrl = String.format(Constants.STRING_FORMAT_API_GATEWAY_URL,
+                    requestEvent.getRequestContext().getApiId(),
+                    System.getenv("AWS_REGION"),
+                    requestEvent.getRequestContext().getStage());
+        }
+        return apiGatewayUrl;
     }
 
     protected abstract APIGatewayProxyResponseEvent process(APIGatewayProxyRequestEvent requestEvent);

@@ -12,10 +12,10 @@ public class ExchangeEndpointProcessor extends BaseHttpEndpointProcessor {
     protected APIGatewayProxyResponseEvent process(APIGatewayProxyRequestEvent requestEvent) {
         try {
             String code = Utils.getQueryParameter(requestEvent, "code");
-            SessionInfo sessionInfo = AuthenticationServices.getInstance().exchangeForSession(code);
+            SessionInfo sessionInfo = AuthenticationServices.getInstance().exchangeForSession(code, this.getApiGatewayUrl(requestEvent));
             if(sessionInfo != null) {//Redirect to home screen with session attached as query parameter
                 String loginRedirectUrl = Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_LOGIN_REDIRECT_URL,
-                        Utils.getEnvironmentVariable(Constants.ENVIRONMENT_VARIABLE_API_GATEWAY_URL));
+                        this.getApiGatewayUrl(requestEvent));
                 loginRedirectUrl += "?session=" + sessionInfo.getId();
                 APIGatewayProxyResponseEvent responseEvent = Utils.createResponseEvent(HttpStatusCode.TEMPORARY_REDIRECT, loginRedirectUrl);
                 Utils.setRedirectHeader(responseEvent, loginRedirectUrl);

@@ -7,6 +7,8 @@ public class Constants {
     public static final String URL_PATTERN_RESOURCE = "/apis/authentication/resource";
     public static final String URL_PATTERN_LOGOUT = "/apis/authentication/logout";
 
+    public static final String STRING_FORMAT_API_GATEWAY_URL = "https://%s.execute-api.%s.amazonaws.com/%s";
+
     public static final String ENVIRONMENT_VARIABLE_COGNITO_PREFIX = "COGNITO_DOMAIN_PREFIX";
     public static final String ENVIRONMENT_VARIABLE_COGNITO_APP_ID = "COGNITO_APP_ID";
     public static final String ENVIRONMENT_VARIABLE_COGNITO_APP_SECRET = "COGNITO_APP_SECRET";

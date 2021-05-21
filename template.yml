@@ -11,7 +11,7 @@ Globals:
       AllowOrigin: "'*'"
       AllowCredentials: "'*'"
 Resources:
-  function:
+  OAuthDemoFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: build/distributions/blank-java.zip
@@ -32,10 +32,10 @@ Resources:
           COGNITO_DOMAIN_PREFIX: sunnyoauth
           COGNITO_APP_ID: 1vvp0tt53g1uhntoa5bmvnvk2a
           COGNITO_APP_SECRET: <secret>
-          # CORS_ALLOW_ORIGIN: http://localhost:4200
-          CORS_ALLOW_ORIGIN: http://oauthdemo2021.s3-website-us-east-1.amazonaws.com
-          # LOGIN_REDIRECT_URL: http://localhost:4200
-          LOGIN_REDIRECT_URL: http://oauthdemo2021.s3-website-us-east-1.amazonaws.com
+          CORS_ALLOW_ORIGIN: http://localhost:4200
+          #CORS_ALLOW_ORIGIN: http://oauthdemo2021.s3-website-us-east-1.amazonaws.com
+          LOGIN_REDIRECT_URL: http://localhost:4200
+          #LOGIN_REDIRECT_URL: http://oauthdemo2021.s3-website-us-east-1.amazonaws.com
       Layers:
         - !Ref libs
       Events:
@@ -52,3 +52,16 @@ Resources:
       ContentUri: build/blank-java-lib.zip
       CompatibleRuntimes:
         - java8
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  OAuthDemoApi:
+    Description: "API Gateway endpoint URL for Prod stage for OAuth Demo function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+  OAuthDemoFunction:
+    Description: "OAuth Demo Lambda Function ARN"
+    Value: !GetAtt OAuthDemoFunction.Arn
+  OAuthDemoFunctionIamRole:
+    Description: "Implicit IAM Role created for OAuth Demo function"
+    Value: !GetAtt OAuthDemoFunctionRole.Arn

@@ -63,6 +63,21 @@ You can also build the application with Maven. To use maven, add `mvn` to the co
     [INFO] --------------------------------[ jar ]---------------------------------
     ...
 
+# Deploy with SAM
+
+To deploy the application the first time, run `3-deploy-sam.sh [gradle/mvn] guided`. Like in the previous section, the first parameter is to control whether to make the build using Gradle or MVN. 
+
+    aws-lambda-authentication-java$ ./3-deploy-sam.sh [gradle/mvn] guided
+
+
+This script uses AWS SAM CLI to deploy the Lambda functions, REST API Gateway and an IAM role. If the AWS CloudFormation stack that contains the resources already exists, the script updates it with any changes to the template or function code.
+
+To deploy the application the second time, you only need to pass in the first parameter. 
+
+
+    aws-lambda-authentication-java$ ./3-deploy-sam.sh [gradle/mvn]
+
+
 ### Set up API Gateway
 
 Updated(5/19/2021): This section is no longer necessary as now `./3-deploy.sh` will also create an API Gateway in front of Lambda function. 

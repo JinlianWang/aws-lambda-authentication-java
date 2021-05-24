@@ -14,7 +14,7 @@ Resources:
   OAuthDemoFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: build/distributions/blank-java.zip
+      CodeUri: build/distributions/aws-lambda-authentication-java.zip
       Handler: authentication.AuthenticationRequestHandler::handleRequest
       Runtime: java8
       Description: Java function
@@ -47,9 +47,9 @@ Resources:
   libs:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: blank-java-lib
-      Description: Dependencies for the blank-java sample app.
-      ContentUri: build/blank-java-lib.zip
+      LayerName: aws-lambda-authentication-java-lib
+      Description: Dependencies for the aws-lambda-authentication-java sample app.
+      ContentUri: build/aws-lambda-authentication-java-lib.zip
       CompatibleRuntimes:
         - java8
 Outputs:

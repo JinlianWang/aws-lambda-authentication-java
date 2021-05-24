@@ -1,6 +1,6 @@
 {
   "body": "test",
-  "path": "/authentication/login",
+  "path": "/apis/authentication/login",
   "httpMethod": "GET",
   "isBase64Encoded": false,
   "queryStringParameters": {

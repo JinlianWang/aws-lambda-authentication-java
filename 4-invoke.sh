@@ -1,10 +1,9 @@
 #!/bin/bash
 set -eo pipefail
-FUNCTION=$(aws cloudformation describe-stack-resource --stack-name blank-java --logical-resource-id function --query 'StackResourceDetail.PhysicalResourceId' --output text)
+API_GATEWAY_ID=$(aws cloudformation describe-stack-resource --stack-name oAuth-Demo-Java --logical-resource-id ServerlessRestApi --query 'StackResourceDetail.PhysicalResourceId' --output text)
 
 while true; do
-  aws lambda invoke --function-name $FUNCTION --payload file://event-http.json out.json
-  cat out.json
+  curl https://${API_GATEWAY_ID}.execute-api.us-east-1.amazonaws.com/Prod/apis/authentication/login
   echo ""
   sleep 2
 done

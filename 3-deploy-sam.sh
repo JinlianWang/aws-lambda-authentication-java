@@ -1,28 +1,9 @@
 #!/bin/bash
 set -eo pipefail
 ARTIFACT_BUCKET=$(cat bucket-name.txt)
-TEMPLATE=template.yml
-if [ $1 ]
-then
-  if [ $1 = mvn ]
-  then
-    TEMPLATE=template-mvn.yml
-    mvn package
-  fi
-else
-  gradle build -i
-fi
+gradle build -i
+sam deploy --stack-name oAuth-Demo-Java --s3-bucket $ARTIFACT_BUCKET --s3-prefix oAuth-Demo-Java --region us-east-1 --no-confirm-changeset --capabilities CAPABILITY_IAM
 
-if [ $2 ]
-then
-  if [ $2 = guided ]
-  then
-    sam deploy --guided
-  else
-    sam deploy
-  fi
-else
-    sam deploy
-fi
+
 
 

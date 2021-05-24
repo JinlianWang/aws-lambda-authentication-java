@@ -64,4 +64,4 @@ Let the script invoke the function a few times and then press `CRTL+C` to exit.
 # Cleanup
 To delete the application, run `5-cleanup.sh`.
 
-    blank$ ./5-cleanup.sh
+    aws-lambda-authentication-java$ ./5-cleanup.sh
